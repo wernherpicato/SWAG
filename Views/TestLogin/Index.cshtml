@@ -1,0 +1,171 @@
+﻿@model IEnumerable<PH_Swag.Models.Product>;
+@using PagedList.Mvc;
+@using System.Web
+
+
+
+@{
+    ViewData["Title"] = "PH Swag List";
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+
+
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#Filters').change(function () {
+            //alert('testing');
+            //window.location.href = '@Url.Action("Index", "Product", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=' + @pager.CurrentPage;
+            window.location.href = '@Url.Action("Index", "Product", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=1';
+        })
+        $('#SearchForm').on("submit", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            SearchFilter();
+        })
+    })
+
+    function SearchFilter() {
+        window.location.href = '@Url.Action("Index", "Product", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val();
+    }
+
+    function pagination(pageNum) {
+        window.location.href = '@Url.Action("Index", "Product", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=' + pageNum;
+    }
+</script>
+
+<h2>@ViewData["Title"]</h2>
+<br />
+<div class="container">
+    @* First Row *@
+    @* @if (((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level2)
+    { *@
+    <table width="100%" border="1">
+        <tr>
+            <td>&nbsp;</td>
+            <td style="padding: 12px 4px 12px 4px; width: 140px; ">
+                @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn-info btn" })
+
+            </td>
+            <td>
+                <form id="SearchForm" method="post">
+                    @Html.DropDownList("Filters", null, htmlAttributes: new { @class = "form-control", style = "width:180px;display:inline; padding-top: 4px;" })
+                </form>
+            <td>
+                    @*  @Html.DropDownList("Filters", null, htmlAttributes: new { @class = "form-control", style = "display:inline;" }) *@
+            </td>
+                @* <td style="padding: 12px 4px 12px 4px; text-align: right;; width: 140px;">
+            @Html.ActionLink("Download CSV", "DownloadCSV", new { search = ViewBag.SearchValue, sortOrder = ViewBag.SortOrder }, htmlAttributes: new { @class = "btn btn-success" })
+
+            </td> *@
+        </tr>
+    </table>
+
+    @*
+    } *@
+
+    @* <table>
+    @foreach (var item in Model)
+    {
+    <tr>
+    <td>
+    @Html.DisplayFor(modelItem => item.ID)
+    </td>
+    <td style="text-align:right">
+    @Html.DisplayFor(modelItem => item.prodDescription)
+    </td>
+    <td style="text-align:right">
+    @Html.DisplayFor(modelItem => item.prodPrice)
+    </td>
+    </tr>
+    }
+
+    </table> *@
+
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("Image", "Index", new { Order = ViewData["UserSort"], page = ViewBag.PageNo, filter = ViewBag.Filter, search = ViewBag.SearchValue }, htmlAttributes: new { style = "text-decoration:none" })
+
+
+            </th>
+            <th style="text-align:right">
+                @Html.ActionLink("Description", "Index", new { Order = ViewData["DateIssuedSort"], page = ViewBag.PageNo, filter = ViewBag.Filter, search = ViewBag.SearchValue }, htmlAttributes: new { style = "text-decoration:none" })
+            </th>
+            <th style="text-align:right">
+                @Html.ActionLink("Price", "Index", new { Order = ViewData["BatchNumSort"], page = ViewBag.PageNo, filter = ViewBag.Filter, search = ViewBag.SearchValue }, htmlAttributes: new { style = "text-decoration:none" })
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+               @*  <td>
+                    <img src="data:image/jpeg;base64,@(item.prodData != null ? Convert.ToBase64String(item.prodData) : "") "
+                         width="100" height="100" />
+                </td> *@
+                <td style="text-align:right">
+                    @Html.DisplayFor(modelItem => item.prodDescription)
+                </td>
+                <td style="text-align:right">
+                    @Html.DisplayFor(modelItem => item.prodPrice)
+                </td>
+
+                <td>
+                    @if (((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level2)
+                    {
+                        @: @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                        @: @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-start">
+
+            @*  @if (pager.CurrentPage > 1)
+        { *@
+            <li class="page-item @(pager.CurrentPage <=1 ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(1)">&lt;&lt;</a>
+            </li>
+            <li class="page-item @(pager.CurrentPage <=1 ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(@pager.CurrentPage-1)">&lt;</a>
+            </li>
+            @* } *@
+
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    @* <a class="page-link" asp-controller="Merchandise" asp-action="Index" asp-route-page="@pge">@pge</a> *@
+                    <a class="page-link" href="#" onclick="pagination('@pge')">@pge</a>
+
+                </li>
+            }
+            @*  @if (pager.CurrentPage < pager.TotalPages)
+        { *@
+
+            <li class="page-item @(pager.CurrentPage >= pager.TotalPages ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(@pager.CurrentPage+1)">&gt;</a>
+            </li>
+            <li class="page-item @(pager.CurrentPage >= pager.TotalPages ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(@pager.TotalPages)">&gt;&gt;</a>
+            </li>
+            @* } *@
+        </ul>
+    }
+</div>
+
+

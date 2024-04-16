@@ -1,0 +1,10 @@
+﻿@model IEnumerable<PH_Swag.Models.Image>;
+
+
+
+@* <h2>@Model.ID</h2> *@
+
+@foreach (var item in Model)
+{
+    <tr><td>@item.productID</td></tr>
+}

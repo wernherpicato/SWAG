@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="mt-4 p-5 rounded" style="background-color:#efefef">
+    <h1>Public Health - Swag/Merch</h1>
+    <p class="lead">A web application for Kern County Public Health Department</p>
+    <p>@Html.ActionLink("Learn more »", "About", "Home", null, htmlAttributes: new { @class = "btn btn-primary btn-lg" }) <br />
+</div>
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <h2>Redeem PH Merch</h2>
+        <p>
+            Redeem PH Branded Merchandise with your PH Swag Bucks.
+        </p>
+        @if (((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level2 || ((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level3)
+        {
+            @: <p>@Html.ActionLink("Redeem »", "Index", "Merchandise", null, htmlAttributes: new { @class = "btn btn-default" })</a></p>
+        }
+        else
+        {
+            <p>Contact your Supervisor for Access to this section</p>
+        }
+    </div>
+    @* <div class="col-md-4">
+        <h2>Assign Cards</h2>
+        <p>Create an appointment record and assign cards to be picked up at the appointment.</p>
+        @if (((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level2 || ((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level3 || ((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level4)
+        {
+            @: <p>@Html.ActionLink("Appointments »", "Index", "Appointments", null, htmlAttributes: new { @class = "btn btn-default" })</p>
+        }
+        else
+        {
+            <p>Contact your Supervisor for Access to this section</p>
+        }
+
+    </div> *@
+   @*  <div class="col-md-4">
+        <h2>Dispense Cards</h2>
+        <p>Present or upload Acknowledgement of Service form and distribute or mail cards to Client</p>
+        @if (((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level5)
+        {
+            if (ViewBag.TestMode)
+            {
+                <a class="btn btn-default" href="http://phweb/PH_GasCard_Lab_Public/AckSvcForms">Release »</a>
+            }
+            else
+            {
+                <a class="btn btn-default" href="https://phweb.kerncounty.com/PH_GasCard_Public/AckSvcForms">Release »</a>
+            }
+        }
+        else
+        {
+            <p>Contact your Supervisor for Access to this section</p>
+        }
+    </div> *@
+</div>

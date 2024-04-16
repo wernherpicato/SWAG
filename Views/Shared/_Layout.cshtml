@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PH - Swag/Merch</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PH_Swag.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PH Swag/Merch</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                       @*  <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li> *@
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Merchandise" asp-action="Index">Redeem</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">My History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+                        </li>
+                      @*   <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Image" asp-action="Index">Image</a>
+                        </li> *@
+                        
+                    </ul>
+
+
+
+                    
+                    <a href="#" class="border rounded py-1 px-3 nav-link d-flex align-items-center" style="margin-right:20px;"> <i class="fa-solid fa-dollar-sign"></i><p class=" d-md-block mb-0">wag Bucks: @ViewBag.SwagBucks</p> </a>
+                    
+                    @{
+                        // if ((String)@ViewBag.CartItemTotal != null)
+                        // {
+                            // @Html.ActionLink("View Cart (" + (String)@ViewBag.CartItemTotal + ")", "ShoppingCart", null, htmlAttributes: new { @class = "btn btn-outline-secondary", @style = "margin-right:20px;" })
+                        <a href="/ShoppingCart" class="border rounded py-1 px-3 nav-link d-flex align-items-center" style="margin-right:20px;"> <i class="fas fa-shopping-cart m-1 me-md-2"></i><p class=" d-md-block mb-0">My cart @ViewBag.NumItems</p> </a>
+
+                        // }
+                    }
+                    
+                    <p class="nav navbar-text navbar-right">Hello, @ViewBag.UserName</p>
+                    
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container body-content">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - PH Swag - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

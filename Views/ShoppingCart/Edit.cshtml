@@ -1,0 +1,259 @@
+﻿@model PH_Swag.Models.Product
+@using PagedList.Mvc;
+@using System.Web
+
+
+
+@{
+    ViewData["Title"] = "PH Swag List";
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+
+
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#Filters').change(function () {
+            //alert('testing');
+            //window.location.href = '@Url.Action("Index", "Merchandise", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=' + @pager.CurrentPage;
+            window.location.href = '@Url.Action("Index", "Merchandise", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=1';
+        })
+        $('#SearchForm').on("submit", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            SearchFilter();
+        })
+    })
+
+    function SearchFilter() {
+        window.location.href = '@Url.Action("Index", "Merchandise", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val();
+    }
+
+    function pagination(pageNum) {
+        window.location.href = '@Url.Action("Index", "Merchandise", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=' + pageNum;
+    }
+
+
+    // window.onload = function () {
+    //     var incButton = document.getElementById("inc");
+    //     alert(incButton);
+    //     incButton.addEventListener("click", incNumber);
+    //     var decButton = document.getElementById("dec");
+    //     decButton.addEventListener("click", decNumber);
+    // }
+
+    function incNumber() {
+        var text = document.getElementById("txtQuantity");
+        var value = parseInt(text.value, 10);
+        if (value <= 10) {
+            value++;
+        }
+        document.getElementById("txtQuantity").value = value;
+    }
+
+
+    function decNumber() {
+        var text = document.getElementById("txtQuantity");
+        var value = parseInt(text.value, 10);
+        if (value > 1) {
+            value--;
+        }
+        document.getElementById("txtQuantity").value = value;
+    }
+</script>
+
+
+<!-- content -->
+
+<form id="shopCartDetail" action="/ShoppingCart/UpdateCart" method="post">
+    <input type="hidden" name="cartItemID" value="@ViewBag.CartItemID" />
+    <div class="py-5">
+        <div class="container">
+            <div class="row gx-1">
+                <div class="col-lg-8">
+
+                    @*  Carousel: Start *@
+                    <style>
+                        .item {
+                            max-height: 400px;
+                        }
+
+                        #carouselExampleIndicators {
+                            margin: 0 auto;
+                            max-width: 800px;
+                            max-height: 600px;
+                        }
+
+                    </style>
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="false" data-bs-ride="carousel" style="border:1px solid black;height:600px;">
+                        @await Component.InvokeAsync("ImageListCarouselView_Public", Model.id)
+                        @*  <div class="carousel-inner">
+                        <div class="carousel-item active">
+                        <img src="https://codingyaar.com/wp-content/uploads/bootstrap-carousel-slide-2.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                        <img src="https://codingyaar.com/wp-content/uploads/bootstrap-carousel-slide-1.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                        <img src="https://codingyaar.com/wp-content/uploads/bootstrap-carousel-slide-3.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        </div>
+                        <div class="carousel-indicators float-start">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active thumbnail" aria-current="true" aria-label="Slide 1">
+                        <img src="https://codingyaar.com/wp-content/uploads/bootstrap-carousel-slide-2.jpg" class="d-block w-100" alt="...">
+                        </button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" class="thumbnail" aria-label="Slide 2">
+                        <img src="https://codingyaar.com/wp-content/uploads/bootstrap-carousel-slide-1.jpg" class="d-block w-100" alt="...">
+                        </button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" class="thumbnail" aria-label="Slide 3">
+                        <img src="https://codingyaar.com/wp-content/uploads/bootstrap-carousel-slide-3.jpg" class="d-block w-100" alt="...">
+                        </button>
+                        </div> *@
+                    </div>
+                    @*  Carousel: End    *@
+                    <br /><br /><br /> <br /><br />
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="">
+                        <h4 class="title text-dark">
+                            @Model.prodName
+                        </h4>
+                        @*  <div class="d-flex flex-row my-3">
+                        <div class="text-warning mb-1 me-2">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span class="ms-1">
+                        4.5
+                        </span>
+                        </div>
+                        <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span>
+                        <span class="text-success ms-2">In stock</span>
+                        </div> *@
+
+
+
+                        <p>
+                            @Model.prodDescription
+                        </p>
+                        <div class="row">
+                            <dt class="col-2">Price:</dt>
+                            <dd class="col-10">@Model.prodPrice</dd>
+
+                            <dt class="col-2">Size:</dt>
+                            <dd class="col-10">@Model.prodSizes</dd>
+                        </div>
+
+                        @* <div class="row">
+                        <dt class="col-3">Type:</dt>
+                        <dd class="col-9">Regular</dd>
+
+                        <dt class="col-3">Color</dt>
+                        <dd class="col-9">Brown</dd>
+
+                        <dt class="col-3">Material</dt>
+                        <dd class="col-9">Cotton, Jeans</dd>
+
+                        <dt class="col-3">Brand</dt>
+                        <dd class="col-9">Reebook</dd>
+                        </div> *@
+
+                        <hr />
+
+                        <div class="row mb-4">
+                            <div class="col-md-4 col-6">
+                                <label class="mb-2">Size</label>
+                                @Html.DropDownList("listSizes", null, htmlAttributes: new { @class = "form-control", style = "height:40px;display:inline; padding-top: 4px;" })
+
+                                @* <select class="form-select border border-secondary" style="height: 35px;">
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                </select> *@
+                            </div>
+
+                            <!-- col.// -->
+                            <div class="col-md-4 col-6 mb-1">
+                                <label class="mb-2 d-block">Quantity</label>
+                                <div class="input-group mb-2" style="width: 170px;">
+                                    <button id="dec" name="dec" onclick="decNumber()" class="btn btn-white border border-secondary px-3" type="button" data-mdb-ripple-color="dark">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="text" value="@ViewBag.Quantity" id="txtQuantity" name="txtQuantity" class="form-control text-center border border-secondary" aria-label="Example text with button addon" aria-describedby="button-addon1" />
+
+                                    <button id="inc" name="inc" onclick="incNumber()" class="btn btn-white border border-secondary px-3" type="button" data-mdb-ripple-color="dark">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                        @section Scripts
+                        {
+                            <script>
+                                var updateCart = function (url) {
+                                    // alert(url);
+                                    //$("#cartButton").load(url);
+                                    window.location = url;
+                                };
+                            </script>
+                        }
+                        @* <a href="#" onclick="updateCart(@Html.Raw("'" + "/Merchandise/AddToCart?prdId=" + Model.id + "'"))" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a> *@
+                        @* <input type="submit" class="btn btn-primary shadow-0" value=" Add to cart" /> *@
+                        @* <button class="btn btn-primary shadow-0" type="submit">
+                            <i class="me-1 fa fa-shopping-basket"></i>  Update
+                        </button> *@
+
+                        @* @Html.ActionLink("Update", "UpdateCart", "ShoppingCart", new { id = Model.id }, htmlAttributes: new { @class = "btn btn-primary shadow-0" }) *@
+                        <button class="btn btn-primary shadow-0" type="submit">Update</button>
+
+                        @Html.ActionLink("Back To Cart", "Index", null, new { id = Model.id }, htmlAttributes: new { @class = "btn btn-secondary shadow-0" })
+
+                       @*  <button class="btn btn-secondary shadow-0" type="submit">
+                              Cancel
+                        </button> *@
+
+                        @* <a href="#" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a> *@
+                        @* <a href="/Merchandise" class="btn btn-warning shadow-0"> Continue Shopping </a> *@
+                        @* <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a> *@
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group mt-2 ">
+                                @* @Html.Raw(@ViewBag.Alert) *@
+                                @Html.Raw(@TempData["cartAlert"])
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group ">
+
+                                @* <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                Item successfully added to cart.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div> *@
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- content -->

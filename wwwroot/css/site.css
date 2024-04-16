@@ -1,0 +1,77 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+
+a:not([class]) {
+    text-decoration: none;
+}
+
+    a:not([class]):hover {
+        text-decoration: underline;
+    }
+
+
+
+
+.carousel-indicators button.thumbnail {
+    width: 100px;
+}
+
+    .carousel-indicators button.thumbnail:not(.active) {
+        opacity: 0.7;
+    }
+
+.carousel-indicators {
+    position: static;
+}
+
+@media screen and (min-width: 992px) {
+    .carousel {
+        max-width: 70%;
+        margin: 0 auto;
+    }
+}
+
+
+.icon-hover:hover {
+    border-color: #3b71ca !important;
+    background-color: white !important;
+    color: #3b71ca !important;
+}
+
+    .icon-hover:hover i {
+        color: #3b71ca !important;
+    }

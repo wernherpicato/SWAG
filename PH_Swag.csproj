@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Exe</OutputType>
+    <UserSecretsId>fe47ed1e-054a-4de0-a5c4-3badf64f497a</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BootstrapIcons.AspNetCore" Version="1.11.0" />
+    <PackageReference Include="Font.Awesome" Version="5.15.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.1.24081.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.1.24081.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="PagedList" Version="1.17.0.0" />
+    <PackageReference Include="PagedList.Mvc" Version="4.5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+</Project>

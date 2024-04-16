@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Image>
+
+@foreach (var img in Model)
+{
+    <img src="data:image/jpeg;base64,@Convert.ToBase64String(@img.prodData)" width="50" height="50" />
+}

@@ -1,0 +1,108 @@
+﻿@model PH_Swag.Models.ProductViewModel
+
+
+@{
+    ViewData["Title"] = "Login";
+    ViewData["Message"] = "Message";
+    var sizes = (IEnumerable<PH_Swag.Models.Size>)ViewBag.Sizes;
+}
+
+
+
+
+<form asp-action="Create" asp-controller="Product" method="post" enctype="multipart/form-data">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            @* <div class="mb-3">
+                <label class="control-label">Image</label>
+                <div class="col-sm-10">
+                    <input type="file" name="Photo" id="Photo" class="form-control-file" />
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>
+            </div> *@
+            <div class="mb-3">
+                <label class="control-label">Name</label>
+                <input asp-for="prodName" class="form-control" />
+                <span asp-validation-for="prodName" class="text-danger"></span>
+                @* <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> *@
+            </div>
+            <div class="mb-3">
+                <label class="control-label">Description</label>
+                <input asp-for="prodDescription" class="form-control" />
+                <span asp-validation-for="prodDescription" class="text-danger"></span>
+                @* <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> *@
+            </div>
+
+            <div class="mb-3">
+                <label class="control-label" style="padding-right:20px;">Size:</label>
+
+                @foreach (var item in Model.Checkboxes)
+                {
+                    <input type="checkbox" id="@item.Value" name="sizeID" value="@item.Text" onclick="getValue()" checked="@item.Checked" />
+                        <label for="sizeIDs" style="padding-right:12px;">@item.Text</label>
+                        @* <input type="hidden" asp-for="@item.Value" />
+                        <input type="hidden" asp-for="@item.Text" /> *@
+                    }
+<br /><span asp-validation-for="sizeIDs" class="text-danger"></span>
+            </div>
+
+            
+
+           
+
+            @* <input type="text" value="" name="Storecheckvalue" id="Storecheckvalue" /> *@
+
+            <input asp-for="sizeIDs" style="visibility:hidden;height:0px;margin-top:0px;" />
+
+            <script>
+                function getValue() {
+                    let txtBox = document.getElementById('sizeIDs');
+                    let checkboxes = document.getElementsByName('sizeID');
+                    let result = "";
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        if (checkboxes[i].checked) {
+                            result += checkboxes[i].value + ",";
+                        }
+                    }
+                    // document.write("<p> You have selected : "
+                    //     + result + "</p>");
+                    //alert(result);
+                    txtBox.value = result;
+                }
+            </script>
+
+           @*  <div class="mb-3">
+                <table class="table-condensed">
+            @foreach (var chk in sizes)
+            {
+                <input type="checkbox" id="@chk.size" name="sizeID" value="@chk.Text" checked="@chk.Checked" />
+                 @: <tr>
+                            @: <td>
+                                @: @chk.size
+                            @: </td>
+                 @: </tr>
+            }
+            </table>
+            <div></div> *@
+            
+
+            <div class="mb-3">
+               @*  <label class="control-label text-danger">@ViewData["Message"]</label> *@
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,212 @@
+﻿@model IEnumerable<PH_Swag.Models.CartItemViewModel>;
+@using PagedList.Mvc;
+@using System.Web
+
+
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+
+
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#Filters').change(function () {
+            //alert('testing');
+            window.location.href = '@Url.Action("Index", "Product", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=1';
+        })
+        $('#SearchForm').on("submit", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            SearchFilter();
+        })
+    })
+
+    function SearchFilter() {
+        window.location.href = '@Url.Action("Index", "Product", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val();
+    }
+
+    function pagination(pageNum) {
+        window.location.href = '@Url.Action("Index", "Product", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=' + pageNum;
+    }
+</script>
+
+<h2>@ViewData["Title"]</h2>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10  offset-lg-1">
+
+
+    <table class="table" border="1">
+        <tr>
+            <th style="text-align:left">
+                <a href="#" style="text-decoration:none"></a>
+            </th>
+            <th style="text-align:left">
+                <a href="#" style="text-decoration:none">Name</a>
+            </th>
+                    <th style="text-align:left">
+                        <a href="#" style="text-decoration:none">Quantity</a>
+                    </th>
+                    
+                    <th>+/-</th>
+           
+            <th style="text-align:left">
+                <a href="#" style="text-decoration:none">Action</a>
+            </th>
+            @*   <th>
+            @Html.ActionLink("Image", "Index", new { Order = ViewData["UserSort"], page = ViewBag.PageNo, filter = ViewBag.Filter, search = ViewBag.SearchValue }, htmlAttributes: new { style = "text-decoration:none" })
+
+
+            </th> *@
+
+            <th></th>
+        </tr>
+
+        @{
+            double cost = -0;
+            foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                @if (item.prodData != null)
+                {
+                    <img src="data:image/jpeg;base64,@(Convert.ToBase64String(item.prodData)) "
+                             alt="Product Image" width="100" height="100" />
+                }
+                else
+                {
+                        <img src="~/images/noimage.jpg" width="100" height="100" />
+                }
+                </td>
+
+              @*   <td>
+                    @*  <partial name="_ProdImageList_Partial" model="item.Images"  /> *@
+                    @* // Component View:  prodId
+                    @await Component.InvokeAsync("ImageListPerProduct", item.prodId)
+                </td> *@
+                <td style="text-align:left">
+                    @Html.DisplayFor(modelItem => item.prodName)<br />
+                    @Html.DisplayFor(modelItem => item.prodDescription)<br />
+                    @Html.DisplayFor(modelItem => item.prodSizes)
+                </td>
+                
+                <td style="text-align:left">
+                    @Html.DisplayFor(modelItem => item.quantity)
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            @if (item.quantity >= 1 && item.quantity <=12)
+                            {
+                                <td>
+                                    <a href="@Url.Action("AddSubtractQty", "ShoppingCart",  new { addSub = 1, cartItemID = item.Id, prdId = item.prodId})">
+                                                    <i class="fa-solid fa-plus"></i>
+                                    </a>
+                                </td>
+                                <td width="8"></td>
+                            }
+                            @if (item.quantity > 1)
+                                        {
+                                            <td>
+                                                <a href="@Url.Action("AddSubtractQty", "ShoppingCart",  new {addSub = 2,  cartItemID = item.Id, prdId = item.prodId })">
+                                                    <i class="fa-solid fa-minus"></i>
+                                                </a>
+                                            </td>
+                                        }
+
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    @if (((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level2)
+                    {
+                    @: @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @: @Html.ActionLink("Delete", "DeleteCartItem", new { cartItemID = item.Id}) 
+                    }
+                </td>
+            </tr>
+                        cost += @item.quantity;
+                }
+
+                    <tr>
+                        <td width="220">
+                            <a href="@Url.Action("Index", "Merchandise")" class="btn btn-primary">
+                                Continue Shopping
+                            </a>
+                        </td>
+                        <td width="220">
+                            @if (cost != 0)
+                            {
+                                <form action="/Home/Payment">
+                                    <button class="btn btn-primary" type="submit">Purchase</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <strong>No product present in shopping cart !</strong>
+                            }
+                        </td>
+                       
+                        
+                        <td></td>
+                        <td><strong>@("Total :" + @cost + " SwagBucks")</strong></td>
+                        <td>
+                        </td>
+                    </tr>
+        }
+                
+            </table>
+            <table border="1" width="100%">
+                
+            </table>
+
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-start">
+
+            @*  @if (pager.CurrentPage > 1)
+        { *@
+            <li class="page-item @(pager.CurrentPage <=1 ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(1)">&lt;&lt;</a>
+            </li>
+            <li class="page-item @(pager.CurrentPage <=1 ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(@pager.CurrentPage-1)">&lt;</a>
+            </li>
+            @* } *@
+
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    @* <a class="page-link" asp-controller="Merchandise" asp-action="Index" asp-route-page="@pge">@pge</a> *@
+                    <a class="page-link" href="#" onclick="pagination('@pge')">@pge</a>
+
+                </li>
+            }
+            @*  @if (pager.CurrentPage < pager.TotalPages)
+        { *@
+
+            <li class="page-item @(pager.CurrentPage >= pager.TotalPages ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(@pager.CurrentPage+1)">&gt;</a>
+            </li>
+            <li class="page-item @(pager.CurrentPage >= pager.TotalPages ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(@pager.TotalPages)">&gt;&gt;</a>
+            </li>
+            @* } *@
+        </ul>
+    }
+        </div>
+    </div>
+</div>
+
+

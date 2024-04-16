@@ -1,0 +1,290 @@
+﻿@* @model PagedList.IPagedList<PH_Swag.Models.Product> *@
+@model IEnumerable<PH_Swag.Models.ProductViewModel>;
+@using PagedList.Mvc;
+@using System.Web
+
+
+
+@{
+    ViewData["Title"] = "PH Swag List";
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+
+
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#Filters').change(function () {
+            //alert('testing');
+            //window.location.href = '@Url.Action("Index", "Merchandise", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=' + @pager.CurrentPage;
+            window.location.href = '@Url.Action("Index", "Merchandise", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=1';
+        })
+        $('#SearchForm').on("submit", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            SearchFilter();
+        })
+    })
+
+    function SearchFilter() {
+        window.location.href = '@Url.Action("Index", "Merchandise", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val();
+    }
+
+    function pagination(pageNum) {
+        window.location.href = '@Url.Action("Index", "Merchandise", new { id = "" })?filter=' + $('#Filters').val() + '&search=' + $('#SearchValue').val() + '&page=' + pageNum;
+    }
+</script>
+
+<h2>@ViewData["Title"]</h2>
+<br />
+
+@* First Row *@
+@if (((PH_Swag.Models.UserAccess)ViewBag.UserAccess).Level2)
+{
+    <table width="100%" border="0">
+        <tr>
+            <td>&nbsp;</td>
+           @*  <td style="padding: 12px 4px 12px 4px; width: 140px; ">
+                @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+            </td> *@
+           <td> 
+            <form id="SearchForm" method="post">
+                    @Html.DropDownList("Filters", null, htmlAttributes: new { @class = "form-control", style = "width:180px;display:inline; padding-top: 4px;" })
+            </form>
+            <td>
+       @*  @Html.DropDownList("Filters", null, htmlAttributes: new { @class = "form-control", style = "display:inline;" }) *@
+        </td>
+            @* <td style="padding: 12px 4px 12px 4px; text-align: right;; width: 140px;">
+                @Html.ActionLink("Download CSV", "DownloadCSV", new { search = ViewBag.SearchValue, sortOrder = ViewBag.SortOrder }, htmlAttributes: new { @class = "btn btn-success" })
+
+            </td> *@
+        </tr>
+    </table>
+
+
+}
+
+<table>
+@* @foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td style="text-align:right">
+            @Html.DisplayFor(modelItem => item.prodDescription)
+        </td>
+        <td style="text-align:right">
+            @Html.DisplayFor(modelItem => item.prodPrice)
+        </td>
+    </tr>
+} *@
+
+@*     
+Shopping cart reference
+https://www.webvees.com/post/create-a-responsive-add-to-cart-page-using-bootstrap-5 *@
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-8">
+            @* <h2 class="mb-4">Our Products</h2> *@
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col">
+                            <div class="card h-100">
+                                <div></div>
+                                
+                                @if (item.prodData != null)
+                                {
+                                    <img src="data:image/jpeg;base64,@( Convert.ToBase64String(item.prodData)) "
+                                         class="card-img-top" alt="Product Image" width="100" height="200" />
+                                } else
+                                {
+                                    <img src="~/images/noimage.jpg" />
+                                }
+
+                                @* <img src="data:image/jpeg;base64,@(item.prodData != null ? Convert.ToBase64String(item.prodData) : "") "
+                                     class="card-img-top" alt="Product Image" width="100" height="200" /> *@
+
+                                @* <img src="http://via.placeholder.com/640x360" class="card-img-top" alt="Product Image" /> *@
+                                
+
+                                <div class="card-body">
+                                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.prodName)</h5>
+                                    <p class="card-text">
+                                        @Html.DisplayFor(modelItem => item.prodDescription)
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            @Html.ActionLink("View Details", "Detail", null, new { id = item.ID }, htmlAttributes: new { @class = "btn-info btn" })
+                                           @*  <button type="button" class="btn btn-sm btn-outline-secondary">
+                                                View Details
+                                                
+                                            </button> *@
+                                            @* <button type="button" class="btn btn-sm btn-outline-secondary">
+                                                Add to Cart
+                                            </button> *@
+                                        </div>
+                                        Price: <span class="badge bg-primary float-start"> <i class="bi bi-cash-coin"></i>@Html.DisplayFor(modelItem => item.prodPrice)</span>  @* <small class="text-muted"></small> *@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                @* <div class="col">
+                    <div class="card h-100">
+                        <img src="http://via.placeholder.com/640x360" class="card-img-top" alt="Product Image" />
+                        <div class="card-body">
+                            <h5 class="card-title">Product Name</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up
+                                the bulk of the card's content.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        View
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                                <small class="text-muted">$19.99</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="http://via.placeholder.com/640x360" class="card-img-top" alt="Product Image" />
+                        <div class="card-body">
+                            <h5 class="card-title">Product Name</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up
+                                the bulk of the card's content.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        View
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                                <small class="text-muted">$19.99</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="http://via.placeholder.com/640x360" class="card-img-top" alt="Product Image" />
+                        <div class="card-body">
+                            <h5 class="card-title">Product Name</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up
+                                the bulk of the card's content.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        View
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                                <small class="text-muted">$19.99</small>
+                            </div>
+                        </div>
+                    </div>
+                </div> *@
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Cart Summary</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Product Name 1
+                        <span class="badge bg-primary float-end">$19.99</span>
+                    </li>
+                    <li class="list-group-item">
+                        Product Name 2
+                        <span class="badge bg-primary float-end">$39.99</span>
+                    </li>
+
+                    <li class="list-group-item">
+                        <strong>Total</strong>
+                        <span class="badge bg-success float-end">$59.98</span>
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <a href="#" class="btn btn-primary">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</table>
+
+
+<div class="container">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-start">
+
+           @*  @if (pager.CurrentPage > 1)
+            { *@
+                <li class="page-item @(pager.CurrentPage <=1 ? " disabled" : "" )">
+                    <a class="page-link" href="#" onclick="pagination(1)">&lt;&lt;</a>
+                </li>
+            <li class="page-item @(pager.CurrentPage <=1 ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(@pager.CurrentPage-1)">&lt;</a>
+                </li>
+            @* } *@
+
+            @for (var pge = pager.StartPage; pge <=pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    @* <a class="page-link" asp-controller="Merchandise" asp-action="Index" asp-route-page="@pge">@pge</a> *@
+                    <a class="page-link" href="#" onclick="pagination('@pge')">@pge</a>
+
+                </li>
+            }
+
+
+           @*  @if (pager.CurrentPage < pager.TotalPages)
+            { *@
+                
+            <li class="page-item @(pager.CurrentPage >= pager.TotalPages ? " disabled" : "" )">
+                    <a class="page-link" href="#" onclick="pagination(@pager.CurrentPage+1)">&gt;</a>
+                </li>
+            <li class="page-item @(pager.CurrentPage >= pager.TotalPages ? " disabled" : "" )">
+                <a class="page-link" href="#" onclick="pagination(@pager.TotalPages)">&gt;&gt;</a>
+                </li>
+            @* } *@
+        </ul>
+    }
+</div>
+
+@* <div>Page @Model.PageNumber of @Model.PageCount</div> *@
+
+
+@* @if (Model.PageCount > 1)
+{
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, Order = ViewBag.SortOrder, filter = ViewBag.Filter, search = ViewBag.SearchValue }))
+} *@
+
